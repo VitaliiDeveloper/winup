@@ -3,7 +3,9 @@
 Clean and look after a Windows PC. The app comes first, with a command line for those who want it. Both use the same core.
 winup is the Windows sibling of [macup](https://github.com/VitaliiDeveloper/macup).
 
-![winup: the list of what can be cleaned, with levels, sizes and checkboxes](docs/images/app-ru.png)
+![winup: the list of what can be cleaned, with levels, sizes and checkboxes](docs/images/app-en.png)
+
+<sub>Also in Ukrainian: [docs/images/app-uk.png](docs/images/app-uk.png)</sub>
 
 > Status: early prototype (0.1). Cleanup of caches works; updates, health checks and admin-only cleanups come later.
 
@@ -13,7 +15,7 @@ winup is the Windows sibling of [macup](https://github.com/VitaliiDeveloper/macu
 - **Three levels, as in macup:** 🟢 `safe` (rebuilds itself), 🟡 `standard` (downloaded again), 🔴 `aggressive` (browser caches; sites load slower at first).
 - **Everything goes to the Recycle Bin.** You can restore it; the space is freed when you empty the bin.
 - **Open apps are skipped.** By process name, and for apps found by folder layout, by asking Windows' Restart Manager which programs hold the files open.
-- **Interface in English, Ukrainian and Russian.**
+- **Interface in English and Ukrainian** (follows Windows, or pick it in the app or with `--lang`).
 - **Reports and history:** every cleanup writes a Markdown report and a line in `history.jsonl` under `%LOCALAPPDATA%\winup`.
 
 What it cleans today: temporary files (older than 24 h), Explorer thumbnails, DirectX/NVIDIA/AMD/Intel shader caches, NVIDIA
@@ -48,7 +50,7 @@ winup history                   # past cleanups
 winup rules                     # what winup knows how to clean
 ```
 
-Options: `--level safe|standard|aggressive`, `--lang en|uk|ru`, `--yes`, `--no-color`, `--no-pick`.
+Options: `--level safe|standard|aggressive`, `--lang en|uk`, `--yes`, `--no-color`, `--no-pick`.
 
 ## Building
 
@@ -70,7 +72,7 @@ dotnet run --project src/Winup.App
 | `tests/Winup.Tests` | xUnit tests on throwaway fake folder trees; the real profile is never touched |
 
 To support another cache, add a rule to `rules.json` and its label and note to `strings.json`. The tests fail if a rule points
-outside the allowed places or a string has no Ukrainian or Russian.
+outside the allowed places or a string has no Ukrainian translation.
 
 ## License
 

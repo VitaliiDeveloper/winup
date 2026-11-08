@@ -3,10 +3,10 @@ using System.Text.Json;
 
 namespace Winup.Core;
 
-/// <summary>Interface strings in English, Ukrainian and Russian. Keys are the English text (as in macup).</summary>
+/// <summary>Interface strings in English and Ukrainian. Keys are the English text (as in macup).</summary>
 public static class Loc
 {
-    public static readonly IReadOnlyList<string> Languages = ["en", "uk", "ru"];
+    public static readonly IReadOnlyList<string> Languages = ["en", "uk"];
 
     private static readonly Lazy<Dictionary<string, Dictionary<string, string>>> Table = new(Load);
     private static string _lang = Detect();
@@ -20,7 +20,6 @@ public static class Loc
     public static CultureInfo Culture => _lang switch
     {
         "uk" => CultureInfo.GetCultureInfo("uk-UA"),
-        "ru" => CultureInfo.GetCultureInfo("ru-RU"),
         _ => CultureInfo.GetCultureInfo("en-US"),
     };
 

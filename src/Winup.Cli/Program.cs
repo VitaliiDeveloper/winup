@@ -39,7 +39,7 @@ public sealed class CommandLine(PathEnvironment env, IRecycler recycler, IAppPro
             switch (a)
             {
                 case "--lang":
-                    if (++k >= args.Length || !Loc.Languages.Contains(args[k])) return Usage("--lang en|uk|ru");
+                    if (++k >= args.Length || !Loc.Languages.Contains(args[k])) return Usage("--lang en|uk");
                     Loc.Lang = args[k];
                     break;
                 case "--level":
@@ -90,7 +90,7 @@ public sealed class CommandLine(PathEnvironment env, IRecycler recycler, IAppPro
         o.WriteLine($"  winup rules          {Loc.T("what winup knows how to clean")}");
         o.WriteLine();
         o.WriteLine($"  --level safe|standard|aggressive   {Loc.T("default: safe")}");
-        o.WriteLine("  --lang en|uk|ru   --yes   --no-color   --no-pick   --version");
+        o.WriteLine("  --lang en|uk   --yes   --no-color   --no-pick   --version");
         o.WriteLine();
         o.WriteLine(D + Loc.T("Everything goes to the Recycle Bin. Open apps are skipped. Links and junctions are never followed.") + N);
     }
@@ -202,7 +202,7 @@ public sealed class CommandLine(PathEnvironment env, IRecycler recycler, IAppPro
         {
             o.Write(Loc.F("Move {0} items ({1}) to the Recycle Bin? [y/N] ", chosen.Count, Format.Bytes(total)));
             var a = (i.ReadLine() ?? "").Trim().ToLowerInvariant();
-            if (a is not ("y" or "yes" or "т" or "так" or "д" or "да"))
+            if (a is not ("y" or "yes" or "т" or "так"))
             {
                 o.WriteLine(Loc.T("Nothing was changed."));
                 return 0;

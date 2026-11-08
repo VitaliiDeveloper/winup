@@ -16,7 +16,7 @@ public sealed partial class MainWindow : Window
     private bool _busy;
     private bool _ready;
 
-    private static readonly (string Code, string Name)[] Languages = [("en", "English"), ("uk", "Українська"), ("ru", "Русский")];
+    private static readonly (string Code, string Name)[] Languages = [("en", "English"), ("uk", "Українська")];
 
     public MainWindow()
     {

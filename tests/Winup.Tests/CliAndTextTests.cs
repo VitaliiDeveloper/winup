@@ -35,7 +35,6 @@ public class CliAndTextTests
     [Theory]
     [InlineData("en", "What can be cleaned")]
     [InlineData("uk", "Що можна почистити")]
-    [InlineData("ru", "Что можно почистить")]
     public void Check_lists_candidates_in_every_language_and_deletes_nothing(string lang, string header)
     {
         using var f = new Fixture();
