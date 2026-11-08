@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Winup.App/Winup.App.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="src/Winup.Cli/Winup.Cli.csproj" />
+    <Project Path="src/Winup.Core/Winup.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Winup.Tests/Winup.Tests.csproj" />
+  </Folder>
+</Solution>
