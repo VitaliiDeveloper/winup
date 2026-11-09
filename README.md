@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="docs/images/icon.png" alt="" width="96">
+
 # winup
 
 **Free up space on Windows, safely.**

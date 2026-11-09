@@ -29,6 +29,7 @@ public sealed partial class MainWindow : Window
         InitializeComponent();
         ExtendsContentIntoTitleBar = true;
         SetTitleBar(AppTitleBar);
+        AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets", "app.ico"));
         if (IsDemo) Title = "winup (demo)";
         var scale = Root.XamlRoot?.RasterizationScale ?? GetDpiScale();
         AppWindow.Resize(new SizeInt32((int)(1040 * scale), (int)(780 * scale)));
