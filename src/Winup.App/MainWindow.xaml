@@ -21,9 +21,7 @@
         <!-- title bar -->
         <Grid x:Name="AppTitleBar" Padding="16,0,0,0">
             <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
-                <Border Width="20" Height="20" CornerRadius="5" Background="{ThemeResource AccentFillColorDefaultBrush}">
-                    <FontIcon Glyph="&#xE74D;" FontSize="11" Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}" />
-                </Border>
+                <Image Source="ms-appx:///Assets/icon-small.svg" Width="20" Height="20" />
                 <TextBlock Text="winup" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center" />
             </StackPanel>
         </Grid>

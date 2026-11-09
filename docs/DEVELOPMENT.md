@@ -51,3 +51,16 @@ Both come from the demo mode, so they never show your own apps:
 powershell -ExecutionPolicy Bypass -File tools\screenshots.ps1   # app screenshots in docs/images
 powershell -ExecutionPolicy Bypass -File tools\cli-svg.ps1       # docs/images/cli-check.svg
 ```
+
+## App icon
+
+A bitten disk: the cache got eaten. The sources are two SVGs in [`src/Winup.App/Assets`](../src/Winup.App/Assets):
+`icon.svg` for 32 px and up, and `icon-small.svg` for 16 and 24 px, with a bigger bite and hole so they still read at that
+size. After editing either one, rebuild `app.ico` (16 to 256 px) and `docs/images/icon.png`:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools\icon.ps1
+```
+
+It rasterizes each size with headless Edge or Chrome. `app.ico` is the icon of both `.exe` files and of the app window in
+the taskbar; the title bar shows `icon-small.svg`.

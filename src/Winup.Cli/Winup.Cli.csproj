@@ -6,6 +6,7 @@
     <AssemblyName>winup</AssemblyName>
     <RootNamespace>Winup.Cli</RootNamespace>
     <InvariantGlobalization>false</InvariantGlobalization>
+    <ApplicationIcon>..\Winup.App\Assets\app.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

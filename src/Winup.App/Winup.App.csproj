@@ -7,6 +7,7 @@
     <RootNamespace>Winup.App</RootNamespace>
     <AssemblyName>winup-app</AssemblyName>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
     <UseWinUI>true</UseWinUI>
     <!-- unpackaged and self-contained: runs from a folder, no MSIX or Windows App Runtime install needed -->
     <WindowsPackageType>None</WindowsPackageType>
@@ -20,6 +21,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.6.5" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2957" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- app.ico: the window in the taskbar and Alt+Tab; icon-small.svg: the title bar. Rebuilt by tools\icon.ps1 -->
+    <Content Include="Assets\app.ico" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets\icon-small.svg" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <title>winup: a bitten disk (the cache got eaten), for 32 px and up</title>
+  <rect width="100" height="100" rx="22" fill="#2f66d0"/>
+  <circle cx="48" cy="52" r="31" fill="#f2c27b"/>
+  <circle cx="48" cy="52" r="30" fill="none" stroke="#dea25a" stroke-width="2"/>
+  <circle cx="48" cy="52" r="10" fill="none" stroke="#dea25a" stroke-width="2"/>
+  <circle cx="35" cy="39" r="3.6" fill="#7a4a1e"/>
+  <circle cx="31" cy="62" r="3.6" fill="#7a4a1e"/>
+  <circle cx="54" cy="72" r="3.6" fill="#7a4a1e"/>
+  <circle cx="64" cy="54" r="3" fill="#7a4a1e"/>
+  <circle cx="46" cy="31" r="2.6" fill="#7a4a1e"/>
+  <circle cx="48" cy="52" r="6" fill="#2f66d0"/>
+  <circle cx="76" cy="30" r="10" fill="#2f66d0"/>
+  <circle cx="82" cy="45" r="8" fill="#2f66d0"/>
+  <circle cx="66" cy="21" r="7" fill="#2f66d0"/>
+  <rect x="80" y="64" width="5" height="5" rx="1" fill="#f2c27b"/>
+  <rect x="85" y="75" width="4" height="4" rx="1" fill="#f2c27b"/>
+  <rect x="78" y="83" width="3" height="3" rx="0.5" fill="#f2c27b"/>
+</svg>
