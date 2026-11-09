@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace Winup.Core;
 
-/// <summary>Interface strings in English and Ukrainian. Keys are the English text (as in macup).</summary>
+/// <summary>Interface strings in English and Ukrainian. Keys are the English text.</summary>
 public static class Loc
 {
     public static readonly IReadOnlyList<string> Languages = ["en", "uk"];

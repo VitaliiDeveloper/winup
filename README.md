@@ -1,79 +1,85 @@
+<div align="center">
+
 # winup
 
-Clean and look after a Windows PC. The app comes first, with a command line for those who want it. Both use the same core.
-winup is the Windows sibling of [macup](https://github.com/VitaliiDeveloper/macup).
+**Free up space on Windows, safely.**
+winup finds caches and leftovers that are safe to remove, shows how much each one takes,
+and moves only what you tick to the Recycle Bin.
 
-![winup: the list of what can be cleaned, with levels, sizes and checkboxes](docs/images/app-en.png)
+![Windows 10 and 11](https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4)
+![.NET 10](https://img.shields.io/badge/.NET-10-512BD4)
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
-<sub>Also in Ukrainian: [docs/images/app-uk.png](docs/images/app-uk.png)</sub>
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="docs/images/app-light.png">
+  <img src="docs/images/app-dark.png" alt="winup: a list of what can be cleaned, each with a level, a size and a checkbox" width="820">
+</picture>
 
-> Status: early prototype (0.1). Cleanup of caches works; updates, health checks and admin-only cleanups come later.
+</div>
 
-## What it does
+> **Early version (0.1).** Cleaning caches works. Health checks, updates and system cleanups that need administrator
+> rights are on the [roadmap](docs/ROADMAP.md).
 
-- **Check first, pick later.** A check changes nothing. It lists what can be cleaned, with sizes and levels; you tick what goes.
-- **Three levels, as in macup:** 🟢 `safe` (rebuilds itself), 🟡 `standard` (downloaded again), 🔴 `aggressive` (browser caches; sites load slower at first).
-- **Everything goes to the Recycle Bin.** You can restore it; the space is freed when you empty the bin.
-- **Open apps are skipped.** By process name, and for apps found by folder layout, by asking Windows' Restart Manager which programs hold the files open.
-- **Interface in English and Ukrainian** (follows Windows, or pick it in the app or with `--lang`).
-- **Reports and history:** every cleanup writes a Markdown report and a line in `history.jsonl` under `%LOCALAPPDATA%\winup`.
+## How it works
 
-What it cleans today: temporary files (older than 24 h), Explorer thumbnails, DirectX/NVIDIA/AMD/Intel shader caches, NVIDIA
-driver downloads, crash dumps and error reports, caches of Electron apps (VS Code, Cursor, Slack, Discord, Claude, …) and of any
-other Chromium-based app found by its folder layout, Steam/Epic/Battle.net/EA launcher caches, npm/Yarn/pip/uv/NuGet/Go/Gradle/
-Cargo caches, and browser caches (Chrome, Edge, Brave, Vivaldi, Yandex, Opera, Firefox). NuGet packages, the Maven repository and
-Playwright browsers are listed but only cleaned when you tick them. Run `winup rules` for the full table.
+| 1. Check | 2. Pick | 3. Clean |
+|:---:|:---:|:---:|
+| <img src="docs/images/app-dark.png" alt="The list after a check" width="260"> | <img src="docs/images/confirm.png" alt="The confirmation before anything is moved" width="260"> | <img src="docs/images/done.png" alt="The result: how much went to the Recycle Bin" width="260"> |
+| winup looks around. **Nothing is changed.** | Tick items, or choose a level. You see the list once more before anything happens. | Everything goes to the **Recycle Bin**, so you can restore it. |
 
-## Safety
+## Three levels
 
-- **Only listed cache folders.** Rules are data ([`rules.json`](src/Winup.Core/Data/rules.json)); a fixed list of allowed places
-  in code ([`SafetyPolicy.cs`](src/Winup.Core/SafetyPolicy.cs)) has the last word, so a bad rule cannot reach anything else.
-- **Two phases.** Every single path is checked again right before it is deleted: still inside its rule's folder and an allowed
-  place, not protected, and no folder on the way is a link.
-- **Links and junctions are never followed or removed.**
-- **Never touched:** Documents, Desktop, Downloads, Pictures, OneDrive, browser profiles (passwords, history, cookies, bookmarks),
-  Electron `User` and `Backups` folders, `.ssh` and other key folders, Store app packages, WSL, and virtual disks (`.vhdx` and
-  friends) wherever they are.
-- **No administrator rights by default.** System folders (Windows Temp, minidumps) are listed and marked; cleaning them with
-  elevation for that action only comes in a later version.
+| Level | What it means | Examples |
+|---|---|---|
+| 🟢 **safe** | Rebuilds itself; you won't notice. | Temp files, shader caches, crash reports, app caches |
+| 🟡 **standard** | Downloaded again when needed (time and traffic). | npm, pip, NuGet, Gradle caches |
+| 🔴 **aggressive** | Sites and apps are slower for a moment. | Browser caches (never passwords, history or cookies) |
 
-## Usage
+Some big items, such as all NuGet packages, are listed but only cleaned when you tick them yourself.
 
-The app: run `winup-app.exe`. It checks on start; tick items or pick a level, then **Clean selected** and confirm.
+## What it finds
 
-The command line:
+- **Windows:** temporary files older than 24 hours, Explorer thumbnails, crash dumps and error reports.
+- **Graphics:** DirectX, NVIDIA, AMD and Intel shader caches; old NVIDIA driver downloads.
+- **Apps:** caches of VS Code, Cursor, Slack, Discord, Teams, Telegram and other Electron apps, and of any other
+  Chromium-based app, found by how its folder looks.
+- **Games:** Steam, Epic Games, Battle.net and EA app caches. Games and saves are not touched.
+- **Developer tools:** npm, Yarn, pip, uv, NuGet, Go, Gradle, Cargo, Maven, Playwright.
+- **Browsers:** Chrome, Edge, Brave, Vivaldi, Opera, Yandex Browser, Firefox (cache only).
+
+## Safe by design
+
+- **A check never changes anything.**
+- **Recycle Bin, not delete.** Changed your mind? Restore it from the Recycle Bin.
+- **Open apps are skipped.** winup checks which programs are running or hold the files open, and tells you what to close.
+- **Only known cache folders.** Documents, Desktop, Downloads, Pictures, OneDrive, browser profiles, app settings,
+  SSH keys and virtual disks (WSL, Docker, VMs) are never touched.
+- **Every path is checked again** right before it moves, and shortcuts to other folders (links, junctions) are never followed.
+- **No administrator rights.** winup runs as you.
+
+## For the command line
+
+<img src="docs/images/cli-check.svg" alt="winup check in a terminal: a numbered list with levels and sizes" width="640">
 
 ```powershell
-winup check                     # list what can be cleaned (changes nothing), then pick numbers or a level
-winup clean --level standard    # clean everything up to a level; asks first (--yes to skip the question)
-winup history                   # past cleanups
-winup rules                     # what winup knows how to clean
+winup check                     # see what can be cleaned, then pick numbers or a level
+winup clean --level standard    # clean up to a level (asks first)
+winup check --demo              # try it with sample data; nothing is read or changed
 ```
 
-Options: `--level safe|standard|aggressive`, `--lang en|uk`, `--yes`, `--no-color`, `--no-pick`.
+More: `winup history`, `winup rules`, `--lang en|uk`, `--yes`. The app takes `--demo` too.
 
-## Building
+## Get it
 
-Windows 10 1904x or newer, [.NET 10 SDK](https://dotnet.microsoft.com/download). Visual Studio 2026 is optional (XAML designer,
-Hot Reload); the command line is enough.
+There is no installer yet: the first release on GitHub Releases, then winget, is on the [roadmap](docs/ROADMAP.md).
+Until then, build it from source with the [.NET 10 SDK](https://dotnet.microsoft.com/download): see [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
-```powershell
-dotnet build winup.slnx
-dotnet test tests/Winup.Tests
-dotnet run --project src/Winup.Cli -- check
-dotnet run --project src/Winup.App
-```
+## Languages
 
-| Project | What it is |
-|---|---|
-| `src/Winup.Core` | Rules as data, scanner, safety policy, cleaner, Recycle Bin, reports, translations |
-| `src/Winup.Cli` | `winup` command line |
-| `src/Winup.App` | WinUI 3 app (Windows App SDK, unpackaged, self-contained) |
-| `tests/Winup.Tests` | xUnit tests on throwaway fake folder trees; the real profile is never touched |
+English and Ukrainian. winup follows your Windows language; you can switch it in the app or with `--lang`.
 
-To support another cache, add a rule to `rules.json` and its label and note to `strings.json`. The tests fail if a rule points
-outside the allowed places or a string has no Ukrainian translation.
+<p align="center"><img src="docs/images/app-uk.png" alt="winup in Ukrainian" width="560"></p>
 
 ## License
 
-MIT
+[MIT](LICENSE)

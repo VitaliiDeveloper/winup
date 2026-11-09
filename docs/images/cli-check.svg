@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="565" viewBox="0 0 760 565" role="img" aria-label="winup check: a numbered list of what can be cleaned, with levels and sizes">
+<rect width="760" height="565" rx="10" fill="#1E1E1E"/>
+<rect width="760" height="40" rx="10" fill="#2B2B2B"/><rect y="30" width="760" height="10" fill="#2B2B2B"/>
+<text x="22" y="25" font-family="Segoe UI, sans-serif" font-size="13" fill="#BBBBBB">Windows PowerShell</text>
+<g font-family="Cascadia Mono, Consolas, monospace" font-size="14" xml:space="preserve" style="white-space:pre">
+<text x="22" y="64"><tspan fill="#6CA0DC">PS&gt; </tspan><tspan fill="#D4D4D4">winup check --demo</tspan></text>
+<text x="22" y="85"></text>
+<text x="22" y="106"><tspan fill="#8A8A8A">Demo: sample data, nothing is read or changed.</tspan></text>
+<text x="22" y="127"></text>
+<text x="22" y="148"><tspan fill="#D4D4D4" font-weight="bold">What can be cleaned</tspan></text>
+<text x="22" y="169"><tspan fill="#D4D4D4">    1  </tspan><tspan fill="#6CCB5F">safe        </tspan><tspan fill="#D4D4D4">    1.8 GB  DirectX shader cache</tspan></text>
+<text x="22" y="190"><tspan fill="#D4D4D4">    2  </tspan><tspan fill="#6CCB5F">safe        </tspan><tspan fill="#D4D4D4">    1.1 GB  NVIDIA shader cache</tspan></text>
+<text x="22" y="211"><tspan fill="#D4D4D4">    3  </tspan><tspan fill="#6CCB5F">safe        </tspan><tspan fill="#D4D4D4">    912 MB  Temporary files (%TEMP%)</tspan></text>
+<text x="22" y="232"><tspan fill="#D4D4D4">    4  </tspan><tspan fill="#6CCB5F">safe        </tspan><tspan fill="#D4D4D4">    684 MB  Visual Studio Code caches</tspan></text>
+<text x="22" y="253"><tspan fill="#D4D4D4">    5  </tspan><tspan fill="#6CCB5F">safe        </tspan><tspan fill="#D4D4D4">    422 MB  Slack caches</tspan></text>
+<text x="22" y="274"><tspan fill="#D4D4D4">    6  </tspan><tspan fill="#6CCB5F">safe        </tspan><tspan fill="#D4D4D4">    312 MB  Discord caches </tspan><tspan fill="#8A8A8A">(skipped while open: Discord)</tspan></text>
+<text x="22" y="295"><tspan fill="#D4D4D4">    7  </tspan><tspan fill="#6CCB5F">safe        </tspan><tspan fill="#D4D4D4">    268 MB  Windows error reports (your account)</tspan></text>
+<text x="22" y="316"><tspan fill="#D4D4D4">    8  </tspan><tspan fill="#6CCB5F">safe        </tspan><tspan fill="#D4D4D4">     96 MB  Explorer thumbnail and icon cache</tspan></text>
+<text x="22" y="337"><tspan fill="#D4D4D4">    9  </tspan><tspan fill="#6CCB5F">safe        </tspan><tspan fill="#D4D4D4">         —  Windows temporary files </tspan><tspan fill="#8A8A8A">(needs administrator rights)</tspan></text>
+<text x="22" y="358"><tspan fill="#D4D4D4">   10  </tspan><tspan fill="#F9D25B">standard    </tspan><tspan fill="#D4D4D4">    2.1 GB  npm cache</tspan></text>
+<text x="22" y="379"><tspan fill="#D4D4D4">   11  </tspan><tspan fill="#F9D25B">standard    </tspan><tspan fill="#D4D4D4">    1.7 GB  Gradle caches</tspan></text>
+<text x="22" y="400"><tspan fill="#D4D4D4">   12  </tspan><tspan fill="#F9D25B">standard    </tspan><tspan fill="#D4D4D4">    640 MB  NuGet HTTP cache</tspan></text>
+<text x="22" y="421"><tspan fill="#D4D4D4">   13  </tspan><tspan fill="#F9D25B">standard    </tspan><tspan fill="#D4D4D4">    380 MB  pip cache</tspan></text>
+<text x="22" y="442"><tspan fill="#D4D4D4">   14  </tspan><tspan fill="#FF6B6B">aggressive  </tspan><tspan fill="#D4D4D4">    3.0 GB  NuGet packages folder </tspan><tspan fill="#8A8A8A">(only if you pick it)</tspan></text>
+<text x="22" y="463"><tspan fill="#D4D4D4">   15  </tspan><tspan fill="#FF6B6B">aggressive  </tspan><tspan fill="#D4D4D4">    1.2 GB  Google Chrome cache</tspan></text>
+<text x="22" y="484"><tspan fill="#D4D4D4">   16  </tspan><tspan fill="#FF6B6B">aggressive  </tspan><tspan fill="#D4D4D4">    515 MB  Microsoft Edge cache </tspan><tspan fill="#8A8A8A">(skipped while open: Microsoft Edge)</tspan></text>
+<text x="22" y="505"></text>
+<text x="22" y="526"><tspan fill="#D4D4D4">Up to level: safe 5.2 GB · standard 10 GB · aggressive 11 GB</tspan></text>
+</g></svg>

@@ -76,6 +76,20 @@ public class CliAndTextTests
     }
 
     [Fact]
+    public void Demo_lists_sample_data_and_its_cleanup_changes_nothing()
+    {
+        using var f = new Fixture();
+        var before = f.Snapshot();
+        var (code, output) = Run(f, "", "clean", "--demo", "--yes", "--level", "aggressive");
+        Assert.Equal(0, code);
+        Assert.Contains("Visual Studio Code caches", output);
+        Assert.Contains("Nothing was changed.", output);
+        Assert.Equal(before, f.Snapshot());
+        Assert.Empty(f.Bin.Recycled);
+        Assert.False(Directory.Exists(f.Env.DataDir)); // no report or history either
+    }
+
+    [Fact]
     public void Pick_understands_numbers_ranges_and_levels()
     {
         using var f = new Fixture();

@@ -16,6 +16,12 @@ public sealed partial class MainWindow : Window
     private bool _busy;
     private bool _ready;
 
+    // --demo: sample data, nothing read or changed (also used for the screenshots in the docs).
+    // --scene dialog|done opens that state once the list is shown; --theme light|dark.
+    private static readonly string[] Args = Environment.GetCommandLineArgs();
+    private static readonly bool IsDemo = Args.Contains("--demo");
+    private static string? Arg(string name) { int i = Array.IndexOf(Args, name); return i >= 0 && i + 1 < Args.Length ? Args[i + 1] : null; }
+
     private static readonly (string Code, string Name)[] Languages = [("en", "English"), ("uk", "Українська")];
 
     public MainWindow()
@@ -23,6 +29,7 @@ public sealed partial class MainWindow : Window
         InitializeComponent();
         ExtendsContentIntoTitleBar = true;
         SetTitleBar(AppTitleBar);
+        if (IsDemo) Title = "winup (demo)";
         var scale = Root.XamlRoot?.RasterizationScale ?? GetDpiScale();
         AppWindow.Resize(new SizeInt32((int)(1040 * scale), (int)(780 * scale)));
         if (AppWindow.Presenter is OverlappedPresenter op) { op.PreferredMinimumWidth = (int)(720 * scale); op.PreferredMinimumHeight = (int)(520 * scale); }
@@ -39,6 +46,16 @@ public sealed partial class MainWindow : Window
     {
         Activated -= OnFirstActivated;
         await ScanAsync();
+        if (Arg("--scene") is null) return;
+        // let the window settle first: opening the dialog within about a second of start-up
+        // crashes inside WinUI (native E_INVALIDARG, no managed exception); a few seconds later it works
+        while (!Root.IsLoaded || Content.XamlRoot is null) await Task.Delay(50);
+        await Task.Delay(3000);
+        switch (Arg("--scene"))
+        {
+            case "dialog": await ConfirmAndCleanAsync(); break;
+            case "done": await CleanAsync(Checked()); break;
+        }
     }
 
     private double GetDpiScale()
@@ -62,6 +79,11 @@ public sealed partial class MainWindow : Window
         LevelCaption.Text = Loc.T("Select up to level");
         CleanText.Text = Loc.T("Clean selected");
         BusyText.Text = Loc.T("Checking… (nothing is changed)");
+        // buttons with an icon + text need an explicit name for screen readers (and UI Automation)
+        Microsoft.UI.Xaml.Automation.AutomationProperties.SetName(CleanButton, CleanText.Text);
+        Microsoft.UI.Xaml.Automation.AutomationProperties.SetName(RescanButton, RescanText.Text);
+        Microsoft.UI.Xaml.Automation.AutomationProperties.SetName(LangBox, "Language");
+        Microsoft.UI.Xaml.Automation.AutomationProperties.SetName(LevelBox, LevelCaption.Text);
         int lvl = LevelBox.SelectedIndex;
         _ready = false;
         LevelBox.Items.Clear();
@@ -108,7 +130,7 @@ public sealed partial class MainWindow : Window
         SetBusy(true, Loc.T("Checking… (nothing is changed)"));
         try
         {
-            _found = await Task.Run(() => new Scanner(_env, _probe).Check(RuleSet.LoadDefault()));
+            _found = IsDemo ? Demo.Candidates() : await Task.Run(() => new Scanner(_env, _probe).Check(RuleSet.LoadDefault()));
             Rebuild(keepChecks: false);
         }
         catch (Exception ex)
@@ -153,9 +175,11 @@ public sealed partial class MainWindow : Window
         ApplyTexts();
     }
 
-    private async void CleanButton_Click(object sender, RoutedEventArgs e)
+    private async void CleanButton_Click(object sender, RoutedEventArgs e) => await ConfirmAndCleanAsync();
+
+    private async Task ConfirmAndCleanAsync()
     {
-        var chosen = _items.Where(i => i.IsChecked && i.Candidate.Selectable).Select(i => i.Candidate).ToList();
+        var chosen = Checked();
         if (chosen.Count == 0) return;
         long total = chosen.Sum(c => c.Bytes);
 
@@ -174,27 +198,46 @@ public sealed partial class MainWindow : Window
         {
             XamlRoot = Content.XamlRoot,
             Title = Loc.T("Clean the selected items?"),
-            Content = body,
-            PrimaryButtonText = Loc.T("Move to Recycle Bin"),
             CloseButtonText = Loc.T("Cancel"),
-            DefaultButton = ContentDialogButton.Close,
+            Content = body,
         };
+        dialog.PrimaryButtonText = Loc.T("Move to Recycle Bin");
+        dialog.DefaultButton = ContentDialogButton.Close; // Enter cancels
         if (await dialog.ShowAsync() != ContentDialogResult.Primary) return;
+        await CleanAsync(chosen);
+    }
 
+    private List<Candidate> Checked() => _items.Where(i => i.IsChecked && i.Candidate.Selectable).Select(i => i.Candidate).ToList();
+
+    private async Task CleanAsync(List<Candidate> chosen)
+    {
+        if (chosen.Count == 0) return;
         SetBusy(true, Loc.T("Moving to the Recycle Bin…"));
         try
         {
-            var result = await Task.Run(() =>
+            CleanResult result;
+            if (IsDemo)
             {
-                var r = new Cleaner(_env, new RecycleBin(), _probe).Clean(chosen);
-                new HistoryStore(_env).Save(r);
-                return r;
-            });
+                await Task.Delay(600);
+                result = Demo.Clean(chosen); // nothing is touched
+            }
+            else
+            {
+                result = await Task.Run(() =>
+                {
+                    var r = new Cleaner(_env, new RecycleBin(), _probe).Clean(chosen);
+                    new HistoryStore(_env).Save(r);
+                    return r;
+                });
+            }
             var msg = Loc.F("Moved to the Recycle Bin: {0}. The space is freed when you empty the Recycle Bin.", Format.Bytes(result.FreedBytes));
             int skipped = result.Skipped.Count();
             if (result.Failed > 0 || skipped > 0) msg += " " + Loc.F("Skipped: {0} in use or refused.", result.Failed + skipped);
             ShowStatus(InfoBarSeverity.Success, Loc.T("Done"), msg);
-            _found = await Task.Run(() => new Scanner(_env, _probe).Check(RuleSet.LoadDefault()));
+            var cleaned = chosen.Select(c => c.Id).ToHashSet();
+            _found = IsDemo
+                ? _found.Where(c => !cleaned.Contains(c.Id)).ToList()
+                : await Task.Run(() => new Scanner(_env, _probe).Check(RuleSet.LoadDefault()));
             Rebuild(keepChecks: false);
         }
         catch (Exception ex)

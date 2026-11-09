@@ -21,6 +21,7 @@ public static class Program
 public sealed class CommandLine(PathEnvironment env, IRecycler recycler, IAppProbe probe, TextWriter o, TextReader i, bool interactive, bool color)
 {
     private bool _color = color;
+    private bool _demo;
     private string G => _color ? "\e[32m" : "";
     private string Y => _color ? "\e[33m" : "";
     private string R => _color ? "\e[31m" : "";
@@ -47,6 +48,8 @@ public sealed class CommandLine(PathEnvironment env, IRecycler recycler, IAppPro
                     break;
                 case "--yes" or "-y": yes = true; break;
                 case "--no-color": _color = false; break;
+                case "--color": _color = true; break;
+                case "--demo": _demo = true; break;
                 case "--no-pick": pickAllowed = false; break;
                 case "--version" or "-V": o.WriteLine("winup " + Version); return 0;
                 case "-h" or "--help": command = "help"; break;
@@ -90,6 +93,7 @@ public sealed class CommandLine(PathEnvironment env, IRecycler recycler, IAppPro
         o.WriteLine($"  winup rules          {Loc.T("what winup knows how to clean")}");
         o.WriteLine();
         o.WriteLine($"  --level safe|standard|aggressive   {Loc.T("default: safe")}");
+        o.WriteLine($"  --demo   {Loc.T("try it with sample data; nothing is read or changed")}");
         o.WriteLine("  --lang en|uk   --yes   --no-color   --no-pick   --version");
         o.WriteLine();
         o.WriteLine(D + Loc.T("Everything goes to the Recycle Bin. Open apps are skipped. Links and junctions are never followed.") + N);
@@ -97,6 +101,11 @@ public sealed class CommandLine(PathEnvironment env, IRecycler recycler, IAppPro
 
     private IReadOnlyList<Candidate> Scan()
     {
+        if (_demo)
+        {
+            o.WriteLine(D + Loc.T("Demo: sample data, nothing is read or changed.") + N);
+            return Demo.Candidates();
+        }
         o.WriteLine(D + Loc.T("Checking… (nothing is changed)") + N);
         return new Scanner(env, probe).Check(RuleSet.LoadDefault());
     }
@@ -207,6 +216,12 @@ public sealed class CommandLine(PathEnvironment env, IRecycler recycler, IAppPro
                 o.WriteLine(Loc.T("Nothing was changed."));
                 return 0;
             }
+        }
+        if (_demo)
+        {
+            o.WriteLine();
+            o.WriteLine(Loc.F("Demo: {0} would go to the Recycle Bin. Nothing was changed.", Format.Bytes(total)));
+            return 0;
         }
         var result = new Cleaner(env, recycler, probe).Clean(chosen);
         o.WriteLine();

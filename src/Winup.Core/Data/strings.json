@@ -1,4 +1,4 @@
-// Interface text. Key = English; uk follows macup (informal "ти").
+// Interface text. Key = English; Ukrainian uses the informal "ти".
 {
   "safe": { "uk": "безпечна" },
   "standard": { "uk": "стандартна" },
@@ -141,6 +141,9 @@
   "free": { "uk": "вільно" },
   "unknown option {0}": { "uk": "невідомий параметр {0}" },
   "unexpected argument {0}": { "uk": "зайвий аргумент {0}" },
+  "try it with sample data; nothing is read or changed": { "uk": "спробувати на прикладі; нічого не читається й не змінюється" },
+  "Demo: sample data, nothing is read or changed.": { "uk": "Демо: приклад даних, нічого не читається й не змінюється." },
+  "Demo: {0} would go to the Recycle Bin. Nothing was changed.": { "uk": "Демо: у Кошик пішло б {0}. Нічого не змінено." },
   "Unknown command: {0}": { "uk": "Невідома команда: {0}" },
 
   // ---------------------------------------------------------------- app

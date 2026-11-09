@@ -1,6 +1,6 @@
 namespace Winup.Core;
 
-/// <summary>How much a cleanup costs you afterwards. Same three levels as macup.</summary>
+/// <summary>How much a cleanup costs you afterwards.</summary>
 public enum Level
 {
     /// <summary>Rebuilds itself, nothing to notice.</summary>
